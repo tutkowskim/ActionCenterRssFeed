@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.ServiceModel.Syndication;
 using System.Windows.Forms;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
@@ -17,30 +18,38 @@ namespace ActionCenterRssFeed
             {
                 Icon = new System.Drawing.Icon(RssIconPath),
                 ContextMenu = new ContextMenu(new MenuItem[] {
-                    new MenuItem("Add Notification", AddNotification),
+                    new MenuItem("Add Notification", AddNotifications),
                     new MenuItem("Exit", Exit)
                 }),
                 Visible = true
             };
+
+            SyndicationFeed feed = new SyndicationFeed();
         }
 
-        private void AddNotification(object sender, EventArgs e)
+        private void AddNotifications(object sender, EventArgs e)
+        {
+            RssFeed feed = new RssFeed("https://www.nasa.gov/rss/dyn/nasax_vodcast.rss");
+            foreach (var item in feed.Items)
+            {
+                Toast(item.Title.Text, item.Summary.Text);
+            }
+        }
+
+        private void Toast(string title, string summary)
         {
             XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
 
             // Fill in the text elements
             XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
-            for (int i = 0; i < stringElements.Length; i++)
-            {
-                stringElements[i].AppendChild(toastXml.CreateTextNode("Line " + i));
-            }
+            stringElements[0].AppendChild(toastXml.CreateTextNode(title));
+            stringElements[0].AppendChild(toastXml.CreateTextNode(summary));
 
             // Specify the absolute path to an image
             string imagePath = "file:///" + RssImagePath;
             XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
             imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
 
-            var blah = toastXml.GetXml();
             ToastNotification toast = new ToastNotification(toastXml);
             ToastNotificationManager.CreateToastNotifier("ActionCenterRssFeedAppUserModelID").Show(toast);
         }
