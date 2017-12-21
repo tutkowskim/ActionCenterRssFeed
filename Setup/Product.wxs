@@ -4,7 +4,7 @@
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-    <MediaTemplate />
+    <MediaTemplate EmbedCab="yes" />
 
     <Feature Id="ProductFeature" Title="ActionCenterRssFeed" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
@@ -30,6 +30,12 @@
       </Component>
       <Component Id="ActionCenterRssFeedConfig" Guid="{2982299F-3068-4566-87EA-3999CEEDB0D8}">
         <File Source="$(var.SolutionDir)/ActionCenterRssFeed//bin/$(var.Configuration)/ActionCenterRssFeed.exe.config"/>
+      </Component>
+      <Component Id="ActionCenterRssIcon" Guid="{41DF259E-25F5-4572-9266-EA72CE8F1CC5}">
+        <File Source="$(var.SolutionDir)/ActionCenterRssFeed//bin/$(var.Configuration)/RSS.ico"/>
+      </Component>
+      <Component Id="ActionCenterRssFeedImage" Guid="{DB7F4A77-2171-4ED9-81A8-93C6864B87B8}">
+        <File Source="$(var.SolutionDir)/ActionCenterRssFeed//bin/$(var.Configuration)/RSS.png"/>
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="StartMenuShortcut" Directory="ApplicationProgramsFolder">

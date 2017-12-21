@@ -15,7 +15,7 @@ namespace ActionCenterRssFeed
             // Initialize Tray Icon
             trayIcon = new NotifyIcon()
             {
-                Icon = new System.Drawing.Icon("D:\\Repos\\ActionCenterRssFeed\\ActionCenterRssFeed\\RSS.ico"),
+                Icon = new System.Drawing.Icon(RssIconPath),
                 ContextMenu = new ContextMenu(new MenuItem[] {
                     new MenuItem("Add Notification", AddNotification),
                     new MenuItem("Exit", Exit)
@@ -36,7 +36,7 @@ namespace ActionCenterRssFeed
             }
 
             // Specify the absolute path to an image
-            String imagePath = "file:///" + Path.GetFullPath("D:\\Repos\\ActionCenterRssFeed\\ActionCenterRssFeed\\RSS.png");
+            string imagePath = "file:///" + RssImagePath;
             XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
             imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
 
@@ -51,6 +51,30 @@ namespace ActionCenterRssFeed
             trayIcon.Visible = false;
 
             Application.Exit();
+        }
+
+        private string InstallDirectory
+        {
+            get
+            {
+                return AppDomain.CurrentDomain.BaseDirectory;
+            }
+        }
+
+        private string RssIconPath
+        {
+            get
+            {
+                return Path.Combine(InstallDirectory, "RSS.ico");
+            }
+        }
+
+        private string RssImagePath
+        {
+            get
+            {
+                return Path.Combine(InstallDirectory, "RSS.png");
+            }
         }
     }
 }
