@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="ActionCenterRssFeed" Language="1033" Version="!(bind.FileVersion.ActionCenterRssFeed.exe)" Manufacturer="Mark Tutkowski" UpgradeCode="821c0b49-c2dc-471e-bb93-c45168ab65bb">
+  <Product Id="*" Name="ActionCenterRssFeed" Language="1033" Version="!(bind.FileVersion.ActionCenterRssFeed.exe)" Manufacturer="Mark Tutkowski" UpgradeCode="821C0B49-C2DC-471E-BB93-C45168AB65BB">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -26,16 +26,16 @@
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="ActionCenterRssFeed" Guid="{AB40DDB8-2C22-4C0D-BAC5-EE0544031992}">
-        <File Source="$(var.SolutionDir)/ActionCenterRssFeed/bin/$(var.Configuration)/ActionCenterRssFeed.exe"/>
+        <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/ActionCenterRssFeed.exe" KeyPath="yes"/>
       </Component>
       <Component Id="ActionCenterRssFeedConfig" Guid="{2982299F-3068-4566-87EA-3999CEEDB0D8}">
-        <File Source="$(var.SolutionDir)/ActionCenterRssFeed//bin/$(var.Configuration)/ActionCenterRssFeed.exe.config"/>
+        <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/ActionCenterRssFeed.exe.config" KeyPath="yes"/>
       </Component>
       <Component Id="ActionCenterRssIcon" Guid="{41DF259E-25F5-4572-9266-EA72CE8F1CC5}">
-        <File Source="$(var.SolutionDir)/ActionCenterRssFeed//bin/$(var.Configuration)/RSS.ico"/>
+        <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/RSS.ico" KeyPath="yes"/>
       </Component>
       <Component Id="ActionCenterRssFeedImage" Guid="{DB7F4A77-2171-4ED9-81A8-93C6864B87B8}">
-        <File Source="$(var.SolutionDir)/ActionCenterRssFeed//bin/$(var.Configuration)/RSS.png"/>
+        <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/RSS.png" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="StartMenuShortcut" Directory="ApplicationProgramsFolder">

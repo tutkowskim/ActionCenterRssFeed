@@ -13,10 +13,22 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
+    <SuppressAllWarnings>False</SuppressAllWarnings>
+    <Pedantic>True</Pedantic>
+    <SuppressSpecificWarnings></SuppressSpecificWarnings>
+	<SuppressIces>ICE69</SuppressIces>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <VerboseOutput>True</VerboseOutput>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <SuppressSpecificWarnings></SuppressSpecificWarnings>
+	<SuppressIces>ICE69</SuppressIces>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <VerboseOutput>True</VerboseOutput>
+    <SuppressAllWarnings>False</SuppressAllWarnings>
+    <Pedantic>True</Pedantic>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />
