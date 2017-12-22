@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace ActionCenterRssFeed
@@ -9,7 +10,7 @@ namespace ActionCenterRssFeed
         
         private List<RssFeed> rssFeeds;
         private ToastManager toastMaster;
-        //private string timer;
+        private System.Timers.Timer timer;
         private NotifyIcon trayIcon;
 
         public ActionCenterRssFeedApplicationContext()
@@ -19,19 +20,28 @@ namespace ActionCenterRssFeed
 
             toastMaster = new ToastManager();
 
+            timer = new System.Timers.Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = 500,
+                
+            };
+            timer.Elapsed += new ElapsedEventHandler(UpdateNotifications);
+
             // Initialize Tray Icon
             trayIcon = new NotifyIcon()
             {
                 Icon = new System.Drawing.Icon(Assets.RssIconPath),
                 ContextMenu = new ContextMenu(new MenuItem[] {
-                    new MenuItem("Add Notification", AddNotifications),
+                    new MenuItem("Update Notifications", UpdateNotifications),
                     new MenuItem("Exit", Exit)
                 }),
                 Visible = true
             };
         }
 
-        private void AddNotifications(object sender, EventArgs e)
+        private void UpdateNotifications(object sender, EventArgs e)
         {
             foreach (var feed in rssFeeds)
             {
