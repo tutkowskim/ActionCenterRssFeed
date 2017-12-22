@@ -13,6 +13,12 @@ namespace ActionCenterRssFeed
             set;
         }
 
+        public string Title
+        {
+            get;
+            private set;
+        }
+
         public IEnumerable<SyndicationItem> Items
         {
             get;
@@ -29,6 +35,7 @@ namespace ActionCenterRssFeed
             using (var reader = XmlReader.Create(RssFeedUri))
             {
                 SyndicationFeed feed = SyndicationFeed.Load(reader);
+                Title = feed.Title.Text;
                 Items = feed.Items;
             }
         }

@@ -14,15 +14,17 @@ namespace ActionCenterRssFeed
         /// Create a Windows Toast Notification
         /// </summary>
         /// <param name="title">Title for the toast</param>
+        /// /// <param name="subtitle">Subtitle in the toast</param>
         /// <param name="summary">Summary in the toast</param>
-        public static void Toast(string title, string summary)
+        public static void Toast(string title, string subtitle, string summary)
         {
             XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
 
             // Fill in the text elements
             XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
             stringElements[0].AppendChild(toastXml.CreateTextNode(title));
-            stringElements[1].AppendChild(toastXml.CreateTextNode(summary));
+            stringElements[1].AppendChild(toastXml.CreateTextNode(subtitle));
+            stringElements[2].AppendChild(toastXml.CreateTextNode(summary));
 
             // Specify the absolute path to an image
             string imagePath = "file:///" + Assets.RssImagePath;

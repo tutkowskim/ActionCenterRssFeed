@@ -45,9 +45,12 @@ namespace ActionCenterRssFeed
             {
                 IEnumerable<System.ServiceModel.Syndication.SyndicationItem> newRssFeedEntries = new List<System.ServiceModel.Syndication.SyndicationItem>(); ;
                 feed.UpdateRssFeed(out newRssFeedEntries);
+
+                string feedTitle = feed.Title;
+
                 foreach (var item in newRssFeedEntries)
                 {
-                    ToastManager.Toast(item.Title.Text, item.Summary.Text);
+                    ToastManager.Toast(item.Title.Text, feedTitle, item.Summary.Text);
                 }
             }
         }
