@@ -9,23 +9,21 @@ namespace ActionCenterRssFeed
     {
         
         private List<RssFeed> rssFeeds;
-        private ToastManager toastMaster;
         private System.Timers.Timer timer;
         private NotifyIcon trayIcon;
 
         public ActionCenterRssFeedApplicationContext()
         {
+            // Hard code an RSS feed for now
             rssFeeds = new List<RssFeed>();
-            rssFeeds.Add(new RssFeed("https://www.nasa.gov/rss/dyn/nasax_vodcast.rss"));
+            rssFeeds.Add(new RssFeed("C:/Users/tutkowskim/Downloads/TestFeed.rss"));
 
-            toastMaster = new ToastManager();
-
+            // Create a timer to update the notifications
             timer = new System.Timers.Timer()
             {
                 AutoReset = true,
                 Enabled = true,
                 Interval = 500,
-                
             };
             timer.Elapsed += new ElapsedEventHandler(UpdateNotifications);
 
@@ -49,7 +47,7 @@ namespace ActionCenterRssFeed
                 feed.UpdateRssFeed(out newRssFeedEntries);
                 foreach (var item in newRssFeedEntries)
                 {
-                    toastMaster.Toast(item.Title.Text, item.Summary.Text);
+                    ToastManager.Toast(item.Title.Text, item.Summary.Text);
                 }
             }
         }
