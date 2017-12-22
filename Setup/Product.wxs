@@ -8,7 +8,7 @@
 
     <Feature Id="ProductFeature" Title="ActionCenterRssFeed" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
-      <ComponentGroupRef Id="StartMenuShortcut" />
+      <ComponentGroupRef Id="Shortcuts" />
     </Feature>
   </Product>
 
@@ -16,6 +16,7 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLFOLDER" Name="ActionCenterRssFeed" />
+        <Directory Id="StartupFolder" />
       </Directory>
       <Directory Id="ProgramMenuFolder">
         <Directory Id="ApplicationProgramsFolder" Name="ActionCenterRssFeed"/>
@@ -24,6 +25,7 @@
   </Fragment>
 
   <Fragment>
+    
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="ActionCenterRssFeed" Guid="{AB40DDB8-2C22-4C0D-BAC5-EE0544031992}">
         <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/ActionCenterRssFeed.exe" KeyPath="yes"/>
@@ -38,7 +40,8 @@
         <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/RSS.png" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
-    <ComponentGroup Id="StartMenuShortcut" Directory="ApplicationProgramsFolder">
+    
+    <ComponentGroup Id="Shortcuts" Directory="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="{53FAB0C1-6CCC-4710-A1A5-475B44D7F897}">
         <Shortcut Id="ApplicationStartMenuShortcut"
                   Name="ActionCenterRssFeed"
@@ -47,8 +50,14 @@
                   WorkingDirectory="INSTALLFOLDER">
           <ShortcutProperty Key="System.AppUserModel.ID" Value="ActionCenterRssFeedAppUserModelID" />
         </Shortcut>
+        <Shortcut Id="ApplicationShortcutInStartUpFolder" 
+                  Directory="StartupFolder"
+                  Name="ActionCenterRssFeed"
+                  Description="Create toasts for new RSS items."
+                  Target="[#ActionCenterRssFeed.exe]"
+                  WorkingDirectory="INSTALLFOLDER" />
         <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
-        <RegistryValue Root="HKCU" Key="Software\Microsoft\MyApplicationName" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        <RegistryValue Root="HKCU" Key="Software\Tutkowski\ActionCenterRssFeed" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
   </Fragment>
