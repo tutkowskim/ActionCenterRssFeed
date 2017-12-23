@@ -22,8 +22,7 @@ namespace RssFeed
             base.OnStartup(e);
 
             // Load rss feed configuration from disk and save it when it changes
-            _rssFeedReaders = new ObservableCollection<RssFeedReader>(LoadRssFeedConfiguration(Assets.ConfigurationFile));
-            _rssFeedReaders.CollectionChanged += RssFeedReadersCollectionChanged;
+            _rssFeedReaders = LoadRssFeedConfiguration(Assets.ConfigurationFile);
 
             // Initialize Tray Icon
             System.Drawing.Icon icon;
@@ -57,38 +56,14 @@ namespace RssFeed
             Shutdown();
         }
 
-        private void RssFeedReadersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        protected override  void OnExit(ExitEventArgs e)
         {
+            // Save the configuration before closeing
             SaveRssFeedConfiguration(Assets.ConfigurationFile, _rssFeedReaders);
-            if (e.OldItems != null)
-            {
-                foreach (object oldItem in e.OldItems)
-                {
-                    INotifyPropertyChanged incc = oldItem as INotifyPropertyChanged;
-                    if (incc != null)
-                    {
-                        incc.PropertyChanged -= RssFeedReaderChanged;
-                    }
-                }
-            }
-            if (e.NewItems != null)
-            {
-                foreach (object newItem in e.NewItems)
-                {
-                    INotifyPropertyChanged incc = newItem as INotifyPropertyChanged;
-                    if (incc != null)
-                    {
-                        incc.PropertyChanged += RssFeedReaderChanged;
-                    }
-                }
-            }
-        }
 
-        private void RssFeedReaderChanged(object sender, PropertyChangedEventArgs e)
-        {
-            SaveRssFeedConfiguration(Assets.ConfigurationFile, _rssFeedReaders);
+            // Call the base impl
+            base.OnExit(e);
         }
-
         private static void SaveRssFeedConfiguration(string path, ObservableCollection<RssFeedReader> rssFeedReaders)
         {
             // Create the directory if it doesn't exist

@@ -8,34 +8,12 @@ using System.Xml.Serialization;
 
 namespace RssFeed
 {
-    public class RssFeedReader : INotifyPropertyChanged
+    public class RssFeedReader
     {
         private Timer _timer;
-        private string _rssFeedUri = string.Empty;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private string uri = string.Empty;
         [XmlElement("rss_feed_uri")]
-        public string RssFeedUri
-        {
-            get
-            {
-                return _rssFeedUri;
-            }
-            set
-            {
-                if (_rssFeedUri != value)
-                {
-                    _rssFeedUri = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("RssFeedUri"));
-                    }
-                }
-                
-            }
-        }
+        public string RssFeedUri { get; set } = string.Empty;
 
 
         [XmlElement("update_interval")]
@@ -50,10 +28,6 @@ namespace RssFeed
                 if (_timer != null && _timer.Interval != value)
                 {
                     _timer.Interval = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("FeedUpdateInterval"));
-                    } 
                 }
             }
         }
