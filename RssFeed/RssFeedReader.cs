@@ -4,7 +4,7 @@ using System.ServiceModel.Syndication;
 using System.Timers;
 using System.Xml;
 
-namespace ActionCenterRssFeed
+namespace RssFeed
 {
     public class RssFeedReader
     {

@@ -1,7 +1,7 @@
 ﻿using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
-namespace ActionCenterRssFeed
+namespace RssFeed
 {
     public static class ToastManager
     {

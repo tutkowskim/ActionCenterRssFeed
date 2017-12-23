@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ActionCenterRssFeed
+namespace RssFeed
 {
     public static class Assets
     {
@@ -10,14 +10,6 @@ namespace ActionCenterRssFeed
             get
             {
                 return AppDomain.CurrentDomain.BaseDirectory;
-            }
-        }
-
-        public static string RssIconPath
-        {
-            get
-            {
-                return Path.Combine(InstallDirectory, "RSS.ico");
             }
         }
 

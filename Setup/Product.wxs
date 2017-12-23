@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="ActionCenterRssFeed" Language="1033" Version="!(bind.FileVersion.ActionCenterRssFeed.exe)" Manufacturer="Mark Tutkowski" UpgradeCode="821C0B49-C2DC-471E-BB93-C45168AB65BB">
+  <Product Id="*" Name="RssFeed" Language="1033" Version="!(bind.FileVersion.RssFeed.exe)" Manufacturer="Mark Tutkowski" UpgradeCode="821C0B49-C2DC-471E-BB93-C45168AB65BB">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
-    <Feature Id="ProductFeature" Title="ActionCenterRssFeed" Level="1">
+    <Feature Id="ProductFeature" Title="RssFeed" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="Shortcuts" />
     </Feature>
@@ -15,11 +15,11 @@
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLFOLDER" Name="ActionCenterRssFeed" />
+        <Directory Id="INSTALLFOLDER" Name="RssFeed" />
         <Directory Id="StartupFolder" />
       </Directory>
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ApplicationProgramsFolder" Name="ActionCenterRssFeed"/>
+        <Directory Id="ApplicationProgramsFolder" Name="RssFeed"/>
       </Directory>
     </Directory>
   </Fragment>
@@ -27,37 +27,34 @@
   <Fragment>
     
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="ActionCenterRssFeed" Guid="{AB40DDB8-2C22-4C0D-BAC5-EE0544031992}">
-        <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/ActionCenterRssFeed.exe" KeyPath="yes"/>
+      <Component Id="RssFeed" Guid="{AB40DDB8-2C22-4C0D-BAC5-EE0544031992}">
+        <File Source="$(var.SolutionDir)RssFeed/bin/$(var.Configuration)/RssFeed.exe" KeyPath="yes"/>
       </Component>
-      <Component Id="ActionCenterRssFeedConfig" Guid="{2982299F-3068-4566-87EA-3999CEEDB0D8}">
-        <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/ActionCenterRssFeed.exe.config" KeyPath="yes"/>
+      <Component Id="RssFeedConfig" Guid="{2982299F-3068-4566-87EA-3999CEEDB0D8}">
+        <File Source="$(var.SolutionDir)RssFeed/bin/$(var.Configuration)/RssFeed.exe.config" KeyPath="yes"/>
       </Component>
-      <Component Id="ActionCenterRssIcon" Guid="{41DF259E-25F5-4572-9266-EA72CE8F1CC5}">
-        <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/RSS.ico" KeyPath="yes"/>
-      </Component>
-      <Component Id="ActionCenterRssFeedImage" Guid="{DB7F4A77-2171-4ED9-81A8-93C6864B87B8}">
-        <File Source="$(var.SolutionDir)ActionCenterRssFeed/bin/$(var.Configuration)/RSS.png" KeyPath="yes"/>
+      <Component Id="RssFeedImage" Guid="{DB7F4A77-2171-4ED9-81A8-93C6864B87B8}">
+        <File Source="$(var.SolutionDir)RssFeed/bin/$(var.Configuration)/RSS.png" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
     
     <ComponentGroup Id="Shortcuts" Directory="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="{53FAB0C1-6CCC-4710-A1A5-475B44D7F897}">
         <Shortcut Id="ApplicationStartMenuShortcut"
-                  Name="ActionCenterRssFeed"
+                  Name="RssFeed"
                   Description="Create toasts for new RSS items."
-                  Target="[#ActionCenterRssFeed.exe]"
+                  Target="[#RssFeed.exe]"
                   WorkingDirectory="INSTALLFOLDER">
-          <ShortcutProperty Key="System.AppUserModel.ID" Value="ActionCenterRssFeedAppUserModelID" />
+          <ShortcutProperty Key="System.AppUserModel.ID" Value="RssFeedAppUserModelID" />
         </Shortcut>
         <Shortcut Id="ApplicationShortcutInStartUpFolder" 
                   Directory="StartupFolder"
-                  Name="ActionCenterRssFeed"
+                  Name="RssFeed"
                   Description="Create toasts for new RSS items."
-                  Target="[#ActionCenterRssFeed.exe]"
+                  Target="[#RssFeed.exe]"
                   WorkingDirectory="INSTALLFOLDER" />
         <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
-        <RegistryValue Root="HKCU" Key="Software\Tutkowski\ActionCenterRssFeed" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        <RegistryValue Root="HKCU" Key="Software\Tutkowski\RssFeed" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
   </Fragment>
