@@ -1,15 +1,41 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Timers;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace RssFeed
 {
-    public class RssFeedReader
+    public class RssFeedReader : INotifyPropertyChanged
     {
         private Timer _timer;
-        public string RssFeedUri { get; set; }
+        private string _rssFeedUri = string.Empty;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private string uri = string.Empty;
+        [XmlAttribute("uri")]
+        public string RssFeedUri
+        {
+            get
+            {
+                return _rssFeedUri;
+            }
+            set
+            {
+                if (_rssFeedUri != value)
+                {
+                    _rssFeedUri = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("RssFeedUri"));
+                }
+                
+            }
+        }
+
+
+        [XmlAttribute("update_interval")]
         public double FeedUpdateInterval
         {
             get
@@ -18,9 +44,10 @@ namespace RssFeed
             }
             set
             {
-                if (_timer != null)
+                if (_timer != null && _timer.Interval != value)
                 {
                     _timer.Interval = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("FeedUpdateInterval"));
                 }
             }
         }

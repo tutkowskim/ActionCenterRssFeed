@@ -1,6 +1,9 @@
 ﻿using System;
-using System.IO;
+using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
+using System.Xml.Serialization;
 using System.Windows;
 
 namespace RssFeed
@@ -10,17 +13,17 @@ namespace RssFeed
     /// </summary>
     public partial class App : System.Windows.Application
     {
-        private System.Windows.Forms.NotifyIcon trayIcon;
-        private ObservableCollection<RssFeedReader> rssFeedReaders;
+        private System.Windows.Forms.NotifyIcon _trayIcon;
+        private ObservableCollection<RssFeedReader> _rssFeedReaders;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             // Call the base startup code
             base.OnStartup(e);
 
-            // Hard code an RSS feed for now
-            rssFeedReaders = new ObservableCollection<RssFeedReader>();
-            rssFeedReaders.Add(new RssFeedReader() { RssFeedUri = "C:/Users/tutkowskim/Downloads/TestFeed.rss", FeedUpdateInterval=500 } );
+            // Load rss feed configuration from disk and save it when it changes
+            _rssFeedReaders = new ObservableCollection<RssFeedReader>(LoadRssFeedConfiguration(Assets.ConfigurationFile));
+            _rssFeedReaders.CollectionChanged += RssFeedReadersCollectionChanged;
 
             // Initialize Tray Icon
             System.Drawing.Icon icon;
@@ -29,7 +32,7 @@ namespace RssFeed
                 icon = new System.Drawing.Icon(iconStream);
             }
 
-            trayIcon = new System.Windows.Forms.NotifyIcon()
+            _trayIcon = new System.Windows.Forms.NotifyIcon()
             {
                 Icon = icon,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[] {
@@ -42,16 +45,86 @@ namespace RssFeed
 
         private void EditRssFeeds(object sender, EventArgs e)
         {
-            RssFeedConfigWindow window = new RssFeedConfigWindow(rssFeedReaders);
-            window.Show();
+            RssFeedConfigWindow rssFeedConfigurationWindow = new RssFeedConfigWindow(_rssFeedReaders);
+            rssFeedConfigurationWindow.ShowDialog();
         }
 
         private void Close(object sender, EventArgs e)
         {
             // Hide tray icon, otherwise it will remain shown until user mouses over it
-            trayIcon.Visible = false;
+            _trayIcon.Visible = false;
 
             Shutdown();
+        }
+
+        private void RssFeedReadersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SaveRssFeedConfiguration(Assets.ConfigurationFile, _rssFeedReaders);
+            if (e.OldItems != null)
+            {
+                foreach (object oldItem in e.OldItems)
+                {
+                    INotifyPropertyChanged incc = oldItem as INotifyPropertyChanged;
+                    if (incc != null)
+                    {
+                        incc.PropertyChanged -= RssFeedReaderChanged;
+                    }
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (object newItem in e.NewItems)
+                {
+                    INotifyPropertyChanged incc = newItem as INotifyPropertyChanged;
+                    if (incc != null)
+                    {
+                        incc.PropertyChanged += RssFeedReaderChanged;
+                    }
+                }
+            }
+        }
+
+        private void RssFeedReaderChanged(object sender, PropertyChangedEventArgs e)
+        {
+            SaveRssFeedConfiguration(Assets.ConfigurationFile, _rssFeedReaders);
+        }
+
+        private static void SaveRssFeedConfiguration(string path, ObservableCollection<RssFeedReader> rssFeedReaders)
+        {
+            // Create the directory if it doesn't exist
+            try
+            {
+                Directory.GetParent(path).Create();
+
+                // Save out the config file
+                var serializer = new XmlSerializer(typeof(ObservableCollection<RssFeedReader>));
+                using (var stream = File.Open(path, FileMode.Create, FileAccess.Write))
+                {
+                    serializer.Serialize(stream, rssFeedReaders);
+                }
+            }
+            catch
+            {
+                // TODO: Log something
+            }
+
+        }
+
+        private static ObservableCollection<RssFeedReader> LoadRssFeedConfiguration(string path)
+        {
+            try
+            {
+                var serializer = new XmlSerializer(typeof(ObservableCollection<RssFeedReader>));
+                using (var stream = File.OpenRead(path))
+                {
+                    return (ObservableCollection<RssFeedReader>)(serializer.Deserialize(stream));
+                }
+            } 
+            catch
+            {
+                // TODO: Log something
+                return new ObservableCollection<RssFeedReader>();
+            }
         }
     }
 }

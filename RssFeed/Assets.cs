@@ -20,5 +20,13 @@ namespace RssFeed
                 return Path.Combine(InstallDirectory, "RSS.png");
             }
         }
+
+        public static string ConfigurationFile
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RssFeed", "RssFeeds.xml");
+            }
+        }
     }
 }
