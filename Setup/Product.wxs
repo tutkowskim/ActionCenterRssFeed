@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="RssFeed" Language="1033" Version="!(bind.FileVersion.RssFeed.exe)" Manufacturer="Mark Tutkowski" UpgradeCode="821C0B49-C2DC-471E-BB93-C45168AB65BB">
+  <Product Id="{F62CCF06-8761-4128-BE99-658822E03192}" Name="RssFeed" Language="1033" Version="!(bind.FileVersion.RssFeed.exe)" Manufacturer="Mark Tutkowski" UpgradeCode="821C0B49-C2DC-471E-BB93-C45168AB65BB">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -10,8 +10,20 @@
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="Shortcuts" />
     </Feature>
+
+    <!-- Define UI for installer -->
+    <WixVariable Id="WixUILicenseRtf" Value="../LICENSE.rtf" />
+    
+    <UIRef Id="WixUI_Minimal" />
+    <UI>
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">NOT Installed</Publish>
+    </UI>
+
+    <Property Id="WixShellExecTarget" Value="[#RssFeed.exe]" />
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
   </Product>
 
+  <!-- Define directories used by the installer. -->
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
@@ -24,8 +36,8 @@
     </Directory>
   </Fragment>
 
+  <!-- Define components to be installed -->
   <Fragment>
-    
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="RssFeed" Guid="{AB40DDB8-2C22-4C0D-BAC5-EE0544031992}">
         <File Source="$(var.SolutionDir)RssFeed/bin/$(var.Configuration)/RssFeed.exe" KeyPath="yes"/>
