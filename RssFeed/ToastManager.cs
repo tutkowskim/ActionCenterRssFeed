@@ -8,7 +8,7 @@ namespace RssFeed
         /// <summary>
         /// Id for this application. This must match the id set on the shortcut in the start menu in order for notifactions to work.
         /// </summary>
-        private const string ApplicationId = "ActionCenterRssFeedAppUserModelID";
+        private const string ApplicationId = "RssFeedAppUserModelID";
 
         /// <summary>
         /// Create a Windows Toast Notification
