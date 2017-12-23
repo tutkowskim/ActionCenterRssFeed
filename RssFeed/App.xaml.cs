@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace RssFeed
@@ -11,7 +11,7 @@ namespace RssFeed
     public partial class App : System.Windows.Application
     {
         private System.Windows.Forms.NotifyIcon trayIcon;
-        private List<RssFeedReader> rssFeedReaders;
+        private ObservableCollection<RssFeedReader> rssFeedReaders;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -19,8 +19,8 @@ namespace RssFeed
             base.OnStartup(e);
 
             // Hard code an RSS feed for now
-            rssFeedReaders = new List<RssFeedReader>();
-            rssFeedReaders.Add(new RssFeedReader("C:/Users/tutkowskim/Downloads/TestFeed.rss", 500));
+            rssFeedReaders = new ObservableCollection<RssFeedReader>();
+            rssFeedReaders.Add(new RssFeedReader() { RssFeedUri = "C:/Users/tutkowskim/Downloads/TestFeed.rss", FeedUpdateInterval=500 } );
 
             // Initialize Tray Icon
             System.Drawing.Icon icon;
@@ -33,10 +33,17 @@ namespace RssFeed
             {
                 Icon = icon,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[] {
+                    new System.Windows.Forms.MenuItem("Edit RSS Feeds", EditRssFeeds),
                     new System.Windows.Forms.MenuItem("Exit", Close)
                 }),
                 Visible = true
             };
+        }
+
+        private void EditRssFeeds(object sender, EventArgs e)
+        {
+            RssFeedConfigWindow window = new RssFeedConfigWindow(rssFeedReaders);
+            window.Show();
         }
 
         private void Close(object sender, EventArgs e)

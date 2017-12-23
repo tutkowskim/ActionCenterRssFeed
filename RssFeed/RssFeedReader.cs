@@ -24,23 +24,17 @@ namespace RssFeed
                 }
             }
         }
-        
-        public SyndicationFeed Feed
-        {
-            get;
-            private set;
-        }
 
-        public RssFeedReader(string uri, double feedUpdateInterval)
-        {
-            RssFeedUri = uri;
+        private SyndicationFeed _feed;
 
+        public RssFeedReader()
+        {
             // Create a timer to update the notifications
             _timer = new Timer()
             {
                 AutoReset = true,
                 Enabled = true,
-                Interval = feedUpdateInterval,
+                Interval = 500,
             };
             _timer.Elapsed += new ElapsedEventHandler(UpdateFeedAndSendNotifications);
         }
@@ -51,33 +45,45 @@ namespace RssFeed
             UpdateRssFeed(out newRssFeedEntries);
             foreach (var item in newRssFeedEntries)
             {
-                ToastManager.Toast(item.Title.Text, Feed.Title.Text, item.Summary.Text);
+                ToastManager.Toast(item.Title.Text, _feed.Title.Text, item.Summary.Text);
+            }
+        }
+
+        private void UpdateRssFeed()
+        {
+            try
+            {
+                using (var reader = XmlReader.Create(RssFeedUri))
+                {
+                    _feed = SyndicationFeed.Load(reader);
+                }
+            }
+            catch
+            {
+                // There was an issue reading the stream. Ignore it for now
             }
         }
 
         private void UpdateRssFeed(out IEnumerable<SyndicationItem> newItems)
         {
             // Save off the current feed
-            SyndicationFeed oldFeed = Feed;
+            SyndicationFeed oldFeed = _feed;
 
             // Update the feed
-            using (var reader = XmlReader.Create(RssFeedUri))
-            {
-                Feed = SyndicationFeed.Load(reader);
-            }
+            UpdateRssFeed();
 
             // Determine the new items
-            if (Feed == null)
+            if (_feed == null)
             {
                 newItems = new List<SyndicationItem>();
             }
             else if (oldFeed == null)
             {
-                newItems = Feed.Items;
+                newItems = _feed.Items;
             }
             else
             {
-                newItems = Feed.Items.Where(item => !oldFeed.Items.Any(oldItem => oldItem.Id == item.Id));
+                newItems = _feed.Items.Where(item => !oldFeed.Items.Any(oldItem => oldItem.Id == item.Id));
             }
         }
     }

@@ -12,13 +12,15 @@
     </Feature>
 
     <!-- Define UI for installer -->
-    <WixVariable Id="WixUILicenseRtf" Value="../LICENSE.rtf" />
-    
     <UIRef Id="WixUI_Minimal" />
+    <WixVariable Id="WixUILicenseRtf" Value="../LICENSE.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="Images/BannerUI.png" />
+    <WixVariable Id="WixUIDialogBmp" Value="Images/DialogUI.png" />
+    
     <UI>
       <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">NOT Installed</Publish>
     </UI>
-
+    
     <Property Id="WixShellExecTarget" Value="[#RssFeed.exe]" />
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
 
