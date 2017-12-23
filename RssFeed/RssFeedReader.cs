@@ -16,7 +16,7 @@ namespace RssFeed
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string uri = string.Empty;
-        [XmlAttribute("uri")]
+        [XmlElement("rss_feed_uri")]
         public string RssFeedUri
         {
             get
@@ -28,14 +28,17 @@ namespace RssFeed
                 if (_rssFeedUri != value)
                 {
                     _rssFeedUri = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("RssFeedUri"));
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("RssFeedUri"));
+                    }
                 }
                 
             }
         }
 
 
-        [XmlAttribute("update_interval")]
+        [XmlElement("update_interval")]
         public double FeedUpdateInterval
         {
             get
@@ -47,7 +50,10 @@ namespace RssFeed
                 if (_timer != null && _timer.Interval != value)
                 {
                     _timer.Interval = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("FeedUpdateInterval"));
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("FeedUpdateInterval"));
+                    } 
                 }
             }
         }
