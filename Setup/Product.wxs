@@ -21,6 +21,10 @@
 
     <Property Id="WixShellExecTarget" Value="[#RssFeed.exe]" />
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+
+    <!-- Add/Remove Programs Icon -->
+    <Icon Id="icon.ico" SourceFile="$(var.SolutionDir)RssFeed/RSS.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
   </Product>
 
   <!-- Define directories used by the installer. -->
