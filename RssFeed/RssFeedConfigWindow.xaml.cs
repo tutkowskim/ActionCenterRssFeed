@@ -8,6 +8,10 @@ namespace RssFeed
     /// </summary>
     public partial class RssFeedConfigWindow : Window
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="feedReaders">The collection of readers to configure.</param>
         public RssFeedConfigWindow(IEnumerable<RssFeedReader> feedReaders)
         {
             InitializeComponent();

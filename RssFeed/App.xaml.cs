@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.IO;
 using System.Xml.Serialization;
 using System.Windows;
@@ -11,15 +9,23 @@ namespace RssFeed
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : System.Windows.Application
+    public partial class App : Application
     {
+        private readonly static log4net.ILog logger = log4net.LogManager.GetLogger("tutkowski.rssfeed.app");
         private System.Windows.Forms.NotifyIcon _trayIcon;
         private ObservableCollection<RssFeedReader> _rssFeedReaders;
 
+        /// <summary>
+        /// Startup and initialize the application.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             // Call the base startup code
             base.OnStartup(e);
+
+            // Configure log4net
+            log4net.Config.XmlConfigurator.Configure();
 
             // Load rss feed configuration from disk and save it when it changes
             _rssFeedReaders = LoadRssFeedConfiguration(Assets.ConfigurationFile);
@@ -42,12 +48,22 @@ namespace RssFeed
             };
         }
 
+        /// <summary>
+        /// Event handler to edit the RSS Feeds.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EditRssFeeds(object sender, EventArgs e)
         {
             RssFeedConfigWindow rssFeedConfigurationWindow = new RssFeedConfigWindow(_rssFeedReaders);
             rssFeedConfigurationWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// Event handler to close the application.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Close(object sender, EventArgs e)
         {
             // Hide tray icon, otherwise it will remain shown until user mouses over it
@@ -56,7 +72,11 @@ namespace RssFeed
             Shutdown();
         }
 
-        protected override  void OnExit(ExitEventArgs e)
+        /// <summary>
+        /// Override OnExit to save the configuration before closing the application
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnExit(ExitEventArgs e)
         {
             // Save the configuration before closeing
             SaveRssFeedConfiguration(Assets.ConfigurationFile, _rssFeedReaders);
@@ -64,6 +84,12 @@ namespace RssFeed
             // Call the base impl
             base.OnExit(e);
         }
+
+        /// <summary>
+        /// Helper method to save the configuration
+        /// </summary>
+        /// <param name="path">The file to save the configuration to.</param>
+        /// <param name="rssFeedReaders">The rss feed readers to save</param>
         private static void SaveRssFeedConfiguration(string path, ObservableCollection<RssFeedReader> rssFeedReaders)
         {
             // Create the directory if it doesn't exist
@@ -78,13 +104,17 @@ namespace RssFeed
                     serializer.Serialize(stream, rssFeedReaders);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                // TODO: Log something
+                logger.Error(string.Format("Failed to save the configuration to {0} due to the exception {1}", path, e.Message));
             }
-
         }
 
+        /// <summary>
+        /// Helper method to save the configuration
+        /// </summary>
+        /// <param name="path">The file to load the configuration from.</param>
+        /// <returns>The rss feed readers</returns>
         private static ObservableCollection<RssFeedReader> LoadRssFeedConfiguration(string path)
         {
             try
@@ -94,10 +124,10 @@ namespace RssFeed
                 {
                     return (ObservableCollection<RssFeedReader>)(serializer.Deserialize(stream));
                 }
-            } 
-            catch
+            }
+            catch (Exception e)
             {
-                // TODO: Log something
+                logger.Error(string.Format("Failed to load the configuration from {0} due to the exception {1}", path, e.Message));
                 return new ObservableCollection<RssFeedReader>();
             }
         }

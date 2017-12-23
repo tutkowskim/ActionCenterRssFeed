@@ -3,8 +3,14 @@ using System.IO;
 
 namespace RssFeed
 {
+    /// <summary>
+    /// Static class that resolves the path to file assets.
+    /// </summary>
     public static class Assets
     {
+        /// <summary>
+        /// The install directory of this application.
+        /// </summary>
         public static string InstallDirectory
         {
             get
@@ -13,6 +19,9 @@ namespace RssFeed
             }
         }
 
+        /// <summary>
+        /// The RSS logo for this application.
+        /// </summary>
         public static string RssImagePath
         {
             get
@@ -21,6 +30,9 @@ namespace RssFeed
             }
         }
 
+        /// <summary>
+        /// The user specific configuration file for this application.
+        /// </summary>
         public static string ConfigurationFile
         {
             get

@@ -54,6 +54,12 @@
       <Component Id="RssFeedImage" Guid="{DB7F4A77-2171-4ED9-81A8-93C6864B87B8}">
         <File Source="$(var.SolutionDir)RssFeed/bin/$(var.Configuration)/RSS.png" KeyPath="yes"/>
       </Component>
+      <Component Id="log4net" Guid="{C8B05CEB-728B-4C29-BFBA-2D7240C29B1F}">
+        <File Source="$(var.SolutionDir)RssFeed/bin/$(var.Configuration)/log4net.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="log4net_config" Guid="{99D58690-04CD-4B4C-B262-160475508768}">
+        <File Source="$(var.SolutionDir)RssFeed/bin/$(var.Configuration)/RssFeed.exe.log.config" KeyPath="yes"/>
+      </Component>
     </ComponentGroup>
     
     <ComponentGroup Id="Shortcuts" Directory="ApplicationProgramsFolder">

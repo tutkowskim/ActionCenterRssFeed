@@ -3,6 +3,9 @@ using Windows.UI.Notifications;
 
 namespace RssFeed
 {
+    /// <summary>
+    /// Post notifications to Window's Toast ToastNotificationManager
+    /// </summary>
     public static class ToastManager
     {
         /// <summary>
