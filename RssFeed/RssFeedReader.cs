@@ -24,6 +24,30 @@ namespace RssFeed
         public string RssFeedUri { get; set; } = string.Empty;
 
         /// <summary>
+        /// Determines if the feed reader is enabled or disabled.
+        /// </summary>
+        [XmlElement("enabled")]
+        public bool Enabled {
+            get
+            {
+                return _timer != null ? _timer.Enabled : false;
+            }
+            set
+            {
+                if (_timer != null && _timer.Enabled != value)
+                {
+                    _timer.Enabled = value;
+                }
+
+                // If the feed is disabled clear the feed
+                if (value == false)
+                {
+                    _feed = null;
+                }
+            }
+        }
+
+        /// <summary>
         /// The interval at which to read the rss feed.
         /// </summary>
         [XmlElement("update_interval")]

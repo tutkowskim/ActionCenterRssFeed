@@ -16,8 +16,9 @@
                   CanUserAddRows="True"
                   CanUserDeleteRows="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding RssFeedUri, Mode=TwoWay}" Header="RSS Feed URI" Width="3*" />
-                <DataGridTextColumn Binding="{Binding FeedUpdateInterval, Mode=TwoWay}" Header="Update Interval [ms]" Width="*" />
+                <DataGridCheckBoxColumn Binding="{Binding Enabled, Mode=TwoWay}" Header="Enabled" Width="1*" />
+                <DataGridTextColumn Binding="{Binding RssFeedUri, Mode=TwoWay}" Header="RSS Feed URI" Width="6*" />
+                <DataGridTextColumn Binding="{Binding FeedUpdateInterval, Mode=TwoWay}" Header="Update Interval [ms]" Width="2*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
