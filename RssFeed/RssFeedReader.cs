@@ -30,19 +30,25 @@ namespace RssFeed
         public bool Enabled {
             get
             {
-                return _timer != null ? _timer.Enabled : false;
+                if (_timer != null)
+                {
+                    return _timer.Enabled;
+                }
+                else
+                {
+                    logger.Warn(string.Format("Failed to get the timer enabled state for {0}. The timer is null.", RssFeedUri));
+                    return false;
+                }
             }
             set
             {
-                if (_timer != null && _timer.Enabled != value)
+                if (_timer != null)
                 {
                     _timer.Enabled = value;
                 }
-
-                // If the feed is disabled clear the feed
-                if (value == false)
+                else
                 {
-                    _feed = null;
+                    logger.Warn(string.Format("Failed to set the timer enabled state for {0}. The timer is null.", RssFeedUri));
                 }
             }
         }
@@ -55,13 +61,25 @@ namespace RssFeed
         {
             get
             {
-                return _timer != null ? _timer.Interval : -1;
+                if (_timer != null)
+                {
+                    return _timer.Interval;
+                }
+                else
+                {
+                    logger.Warn(string.Format("Failed to get the timer interval for {0}. The timer is null.", RssFeedUri));
+                    return -1;
+                }
             }
             set
             {
-                if (_timer != null && _timer.Interval != value)
+                if (_timer != null)
                 {
                     _timer.Interval = value;
+                }
+                else
+                {
+                    logger.Warn(string.Format("Failed to set the timer interval for {0}. The timer is null.", RssFeedUri));
                 }
             }
         }
