@@ -19,7 +19,13 @@
                 <DataGridCheckBoxColumn Binding="{Binding Enabled, Mode=TwoWay}" Header="Enabled" Width="1*" />
                 <DataGridTextColumn Binding="{Binding FeedUri, Mode=TwoWay}" Header="RSS Feed URI" Width="6*" />
                 <DataGridTextColumn Binding="{Binding FeedUpdateInterval, Mode=TwoWay}" Header="Update Interval [ms]" Width="2*" />
-                <DataGridTextColumn Binding="{Binding FeedUsername, Mode=TwoWay}" Header="Username" Width="2*" />
+                <DataGridTemplateColumn Header="Username"  Width="2*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox BorderThickness="0" DataContext="{Binding FeedCredentials}" Text="{Binding Username}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Password"  Width="2*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
