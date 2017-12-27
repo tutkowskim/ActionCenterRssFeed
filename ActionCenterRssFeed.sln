@@ -10,6 +10,11 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixpro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssFeed", "RssFeed\RssFeed.csproj", "{8D86A5F4-9A0C-43B0-8865-46E5EF8096F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UT_RssFeed", "UT_RssFeed\UT_RssFeed.csproj", "{FD97C7F5-E32F-43FF-91BD-B21E1BE5E44C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8D86A5F4-9A0C-43B0-8865-46E5EF8096F7} = {8D86A5F4-9A0C-43B0-8865-46E5EF8096F7}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +37,14 @@ Global
 		{8D86A5F4-9A0C-43B0-8865-46E5EF8096F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8D86A5F4-9A0C-43B0-8865-46E5EF8096F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{8D86A5F4-9A0C-43B0-8865-46E5EF8096F7}.Release|x86.Build.0 = Release|Any CPU
+		{FD97C7F5-E32F-43FF-91BD-B21E1BE5E44C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD97C7F5-E32F-43FF-91BD-B21E1BE5E44C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD97C7F5-E32F-43FF-91BD-B21E1BE5E44C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FD97C7F5-E32F-43FF-91BD-B21E1BE5E44C}.Debug|x86.Build.0 = Debug|Any CPU
+		{FD97C7F5-E32F-43FF-91BD-B21E1BE5E44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD97C7F5-E32F-43FF-91BD-B21E1BE5E44C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD97C7F5-E32F-43FF-91BD-B21E1BE5E44C}.Release|x86.ActiveCfg = Release|Any CPU
+		{FD97C7F5-E32F-43FF-91BD-B21E1BE5E44C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

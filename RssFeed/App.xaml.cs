@@ -56,7 +56,7 @@ namespace RssFeed
         private void EditRssFeeds(object sender, EventArgs e)
         {
             RssFeedConfigWindow rssFeedConfigurationWindow = new RssFeedConfigWindow(_rssFeedReaders);
-            rssFeedConfigurationWindow.ShowDialog();
+            rssFeedConfigurationWindow.Show();
         }
 
         /// <summary>

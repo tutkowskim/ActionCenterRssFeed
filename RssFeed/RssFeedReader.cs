@@ -1,6 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security;
 using System.ServiceModel.Syndication;
 using System.Timers;
 using System.Xml;
@@ -11,17 +14,22 @@ namespace RssFeed
     /// <summary>
     /// RSS Feed Reader which reads an rss fead at a given interval.
     /// </summary>
-    public class RssFeedReader
+    public class RssFeedReader : INotifyPropertyChanged
     {
         private readonly static log4net.ILog logger = log4net.LogManager.GetLogger("tutkowski.rssfeed.reader");
         private Timer _timer;
         private SyndicationFeed _feed;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// The uri to the rss feed.
         /// </summary>
         [XmlElement("rss_feed_uri")]
         public string RssFeedUri { get; set; } = string.Empty;
+
+        [XmlElement("rss_feed_credentials")]
+        public Credentials RssFeedCredentials { get; set; } = new Credentials();
 
         /// <summary>
         /// Determines if the feed reader is enabled or disabled.
@@ -45,6 +53,7 @@ namespace RssFeed
                 if (_timer != null)
                 {
                     _timer.Enabled = value;
+                    OnPropertyChanged("Enabled");
                 }
                 else
                 {
@@ -76,6 +85,7 @@ namespace RssFeed
                 if (_timer != null)
                 {
                     _timer.Interval = value;
+                    OnPropertyChanged("FeedUpdateInterval");
                 }
                 else
                 {
@@ -93,7 +103,7 @@ namespace RssFeed
             _timer = new Timer()
             {
                 AutoReset = true,
-                Enabled = true,
+                Enabled = false,
                 Interval = 500,
             };
             _timer.Elapsed += new ElapsedEventHandler(UpdateFeedAndSendNotifications);
@@ -151,17 +161,39 @@ namespace RssFeed
 
             try
             {
-                using (var reader = XmlReader.Create(RssFeedUri))
+                XmlReaderSettings readerSettings = null;
+                using (SecureString password = RssFeedCredentials.GetSecurePassword())
+                {
+                    readerSettings = new XmlReaderSettings()
+                    {
+                        XmlResolver = new XmlUrlResolver()
+                        {
+                            Credentials = new NetworkCredential(RssFeedCredentials.Username, password)
+                        }
+                    };
+                }
+                using (XmlReader reader = XmlReader.Create(RssFeedUri, readerSettings))
                 {
                     _feed = SyndicationFeed.Load(reader);
                 }
             }
             catch (Exception e)
             {
-                logger.Error(string.Format("Failed to update the feed for {0} due to the exception {1}", RssFeedUri, e.Message));
+                Enabled = false;
+                ToastManager.Toast("Failed to Update Feed", string.Format("Failed to update the feed {0}. Check settings and renable the feed.", RssFeedUri));
+                logger.Error(string.Format("Failed to update the feed {0} due to the exception {1}", RssFeedUri, e.Message));
             }
 
             logger.Debug(string.Format("Finished updating the feed for {0}", RssFeedUri));
+        }
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
         }
     }
 }

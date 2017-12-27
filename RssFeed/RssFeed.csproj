@@ -51,6 +51,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Runtime" />
@@ -80,6 +81,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Assets.cs" />
+    <Compile Include="Credentials.cs" />
     <Compile Include="RssFeedConfigWindow.xaml.cs">
       <DependentUpon>RssFeedConfigWindow.xaml</DependentUpon>
     </Compile>
