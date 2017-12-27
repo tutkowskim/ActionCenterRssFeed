@@ -59,7 +59,7 @@ namespace RssFeed
             }
 
             // Sort the items
-            updatedItemList.Sort((item1, item2) => item1.PublishDate.CompareTo(item2.PublishDate));
+            updatedItemList.Sort((item1, item2) => item2.PublishDate.CompareTo(item1.PublishDate));
 
             // Update the list
             Dispatcher.BeginInvoke(new Action(delegate ()
