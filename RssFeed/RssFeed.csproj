@@ -82,10 +82,12 @@
     </Compile>
     <Compile Include="Assets.cs" />
     <Compile Include="Credentials.cs" />
-    <Compile Include="RssFeedConfigWindow.xaml.cs">
-      <DependentUpon>RssFeedConfigWindow.xaml</DependentUpon>
+    <Compile Include="Feed.cs" />
+    <Compile Include="FeedConfigWindow.xaml.cs">
+      <DependentUpon>FeedConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RssFeedReader.cs" />
+    <Compile Include="FeedItem.cs" />
+    <Compile Include="FeedReader.cs" />
     <Compile Include="ToastManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +132,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="RssFeedConfigWindow.xaml">
+    <Page Include="FeedConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

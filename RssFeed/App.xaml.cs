@@ -13,7 +13,7 @@ namespace RssFeed
     {
         private readonly static log4net.ILog logger = log4net.LogManager.GetLogger("tutkowski.rssfeed.app");
         private System.Windows.Forms.NotifyIcon _trayIcon;
-        private ObservableCollection<RssFeedReader> _rssFeedReaders;
+        private ObservableCollection<FeedReader> _rssFeedReaders;
 
         /// <summary>
         /// Startup and initialize the application.
@@ -55,7 +55,7 @@ namespace RssFeed
         /// <param name="e"></param>
         private void EditRssFeeds(object sender, EventArgs e)
         {
-            RssFeedConfigWindow rssFeedConfigurationWindow = new RssFeedConfigWindow(_rssFeedReaders);
+            FeedConfigWindow rssFeedConfigurationWindow = new FeedConfigWindow(_rssFeedReaders);
             rssFeedConfigurationWindow.Show();
         }
 
@@ -90,7 +90,7 @@ namespace RssFeed
         /// </summary>
         /// <param name="path">The file to save the configuration to.</param>
         /// <param name="rssFeedReaders">The rss feed readers to save</param>
-        private static void SaveRssFeedConfiguration(string path, ObservableCollection<RssFeedReader> rssFeedReaders)
+        private static void SaveRssFeedConfiguration(string path, ObservableCollection<FeedReader> rssFeedReaders)
         {
             // Create the directory if it doesn't exist
             try
@@ -98,7 +98,7 @@ namespace RssFeed
                 Directory.GetParent(path).Create();
 
                 // Save out the config file
-                var serializer = new XmlSerializer(typeof(ObservableCollection<RssFeedReader>));
+                var serializer = new XmlSerializer(typeof(ObservableCollection<FeedReader>));
                 using (var stream = File.Open(path, FileMode.Create, FileAccess.Write))
                 {
                     serializer.Serialize(stream, rssFeedReaders);
@@ -115,20 +115,20 @@ namespace RssFeed
         /// </summary>
         /// <param name="path">The file to load the configuration from.</param>
         /// <returns>The rss feed readers</returns>
-        private static ObservableCollection<RssFeedReader> LoadRssFeedConfiguration(string path)
+        private static ObservableCollection<FeedReader> LoadRssFeedConfiguration(string path)
         {
             try
             {
-                var serializer = new XmlSerializer(typeof(ObservableCollection<RssFeedReader>));
+                var serializer = new XmlSerializer(typeof(ObservableCollection<FeedReader>));
                 using (var stream = File.OpenRead(path))
                 {
-                    return (ObservableCollection<RssFeedReader>)(serializer.Deserialize(stream));
+                    return (ObservableCollection<FeedReader>)(serializer.Deserialize(stream));
                 }
             }
             catch (Exception e)
             {
                 logger.Error(string.Format("Failed to load the configuration from {0} due to the exception {1}", path, e.Message));
-                return new ObservableCollection<RssFeedReader>();
+                return new ObservableCollection<FeedReader>();
             }
         }
     }

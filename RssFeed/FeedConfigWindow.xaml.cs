@@ -6,7 +6,7 @@ namespace RssFeed
     /// <summary>
     /// Interaction logic for RssFeedConfigWindow.xaml
     /// </summary>
-    public partial class RssFeedConfigWindow : Window
+    public partial class FeedConfigWindow : Window
     {
         private readonly static log4net.ILog logger = log4net.LogManager.GetLogger("tutkowski.rssfeed.rssfeedconfigwindow");
 
@@ -14,7 +14,7 @@ namespace RssFeed
         /// Constructor
         /// </summary>
         /// <param name="feedReaders">The collection of readers to configure.</param>
-        public RssFeedConfigWindow(IEnumerable<RssFeedReader> feedReaders)
+        public FeedConfigWindow(IEnumerable<FeedReader> feedReaders)
         {
             InitializeComponent();
             RssFeedsGrid.ItemsSource = feedReaders;
@@ -28,10 +28,10 @@ namespace RssFeed
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             PasswordBox passwordBox = sender as PasswordBox;
-            RssFeedReader feedReader = passwordBox.DataContext as RssFeedReader;
+            FeedReader feedReader = passwordBox.DataContext as FeedReader;
             if (feedReader != null)
             {
-                feedReader.RssFeedCredentials.Password = passwordBox.Password;
+                feedReader.FeedCredentials.Password = passwordBox.Password;
             }
             else
             {
@@ -47,10 +47,10 @@ namespace RssFeed
         private void PasswordBox_Loaded(object sender, RoutedEventArgs e)
         {
             PasswordBox passwordBox = sender as PasswordBox;
-            RssFeedReader feedReader = passwordBox.DataContext as RssFeedReader;
+            FeedReader feedReader = passwordBox.DataContext as FeedReader;
             if (feedReader != null)
             {
-                passwordBox.Password = feedReader.RssFeedCredentials.Password;
+                passwordBox.Password = feedReader.FeedCredentials.Password;
             }
             else
             {
