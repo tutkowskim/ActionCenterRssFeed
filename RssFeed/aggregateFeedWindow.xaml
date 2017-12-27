@@ -1,0 +1,29 @@
+﻿<Window x:Class="RssFeed.AggregateFeedWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RssFeed"
+        mc:Ignorable="d"
+        Icon="pack://application:,,,/RssFeed;component/RSS.ico"
+        Title="Feed" 
+        Width="800"
+        Height="600" >
+    <Grid>
+        <ListView Name="FeedItems">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding FeedImageUrl}" />
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Title}" />
+                            <TextBlock Text="{Binding FeedTitle}" />
+                            <TextBlock Text="{Binding PublishDate}" />
+                            <TextBlock Text="{Binding Summary}" />
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>

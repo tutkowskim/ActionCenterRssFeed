@@ -46,6 +46,18 @@ namespace RssFeed
                 }),
                 Visible = true
             };
+            _trayIcon.MouseClick += ShowAggregateFeed;
+        }
+
+        /// <summary>
+        /// Event handler to show the aggregate feed of all the feeds.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowAggregateFeed(object sender, EventArgs e)
+        {
+            AggregateFeedWindow rssFeedConfigurationWindow = new AggregateFeedWindow(_rssFeedReaders);
+            rssFeedConfigurationWindow.Show();
         }
 
         /// <summary>

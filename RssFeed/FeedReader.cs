@@ -18,6 +18,7 @@ namespace RssFeed
     {
         private readonly static log4net.ILog logger = log4net.LogManager.GetLogger("tutkowski.rssfeed.reader");
         private Timer _timer;
+        private Feed _feed = new Feed();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,7 +29,20 @@ namespace RssFeed
         /// This is serilalized out so that the notifications aren't redisplayed for an item after restarting the application.
         /// </remarks>
         [XmlElement("feed_content")]
-        public Feed Feed { get; set; } = new Feed();
+        public Feed Feed {
+            get
+            {
+                return _feed;
+            }
+            set
+            {
+                if (_feed != value)
+                {
+                    _feed = value;
+                    OnPropertyChanged("Feed");
+                }
+            }
+        }
 
         /// <summary>
         /// The uri to the rss feed.
