@@ -54,10 +54,13 @@ namespace RssFeed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ShowAggregateFeed(object sender, EventArgs e)
+        private void ShowAggregateFeed(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            AggregateFeedWindow rssFeedConfigurationWindow = new AggregateFeedWindow(_rssFeedReaders);
-            rssFeedConfigurationWindow.Show();
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                AggregateFeedWindow rssFeedConfigurationWindow = new AggregateFeedWindow(_rssFeedReaders);
+                rssFeedConfigurationWindow.Show();
+            }
         }
 
         /// <summary>
