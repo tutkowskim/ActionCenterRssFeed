@@ -47,7 +47,7 @@ namespace RssFeed
             }
 
             // Set the feed's image
-            ImageUri = syndicationFeed.ImageUrl != null ? syndicationFeed.ImageUrl.AbsolutePath : string.Empty;
+            ImageUri = syndicationFeed.ImageUrl != null ? syndicationFeed.ImageUrl.AbsoluteUri : string.Empty;
 
             // Set the feed's items
             Items = new List<FeedItem>();
