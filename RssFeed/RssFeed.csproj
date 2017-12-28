@@ -76,16 +76,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AggregateFeedWindow.xaml.cs">
+      <DependentUpon>AggregateFeedWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Assets.cs" />
     <Compile Include="Credentials.cs" />
-    <Compile Include="RssFeedConfigWindow.xaml.cs">
-      <DependentUpon>RssFeedConfigWindow.xaml</DependentUpon>
+    <Compile Include="Feed.cs" />
+    <Compile Include="FeedConfigWindow.xaml.cs">
+      <DependentUpon>FeedConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RssFeedReader.cs" />
+    <Compile Include="FeedItem.cs" />
+    <Compile Include="FeedReader.cs" />
     <Compile Include="ToastManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +135,11 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="RssFeedConfigWindow.xaml">
+    <Page Include="AggregateFeedWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FeedConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

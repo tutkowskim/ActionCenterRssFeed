@@ -14,22 +14,44 @@ namespace RssFeed
     /// <summary>
     /// RSS Feed Reader which reads an rss fead at a given interval.
     /// </summary>
-    public class RssFeedReader : INotifyPropertyChanged
+    public class FeedReader : INotifyPropertyChanged
     {
         private readonly static log4net.ILog logger = log4net.LogManager.GetLogger("tutkowski.rssfeed.reader");
         private Timer _timer;
-        private SyndicationFeed _feed;
+        private Feed _feed = new Feed();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
+        /// The current conect of this stream.
+        /// </summary>
+        /// <remarks>
+        /// This is serilalized out so that the notifications aren't redisplayed for an item after restarting the application.
+        /// </remarks>
+        [XmlElement("feed_content")]
+        public Feed Feed {
+            get
+            {
+                return _feed;
+            }
+            set
+            {
+                if (_feed != value)
+                {
+                    _feed = value;
+                    OnPropertyChanged("Feed");
+                }
+            }
+        }
+
+        /// <summary>
         /// The uri to the rss feed.
         /// </summary>
-        [XmlElement("rss_feed_uri")]
-        public string RssFeedUri { get; set; } = string.Empty;
+        [XmlElement("feed_uri")]
+        public string FeedUri { get; set; } = string.Empty;
 
-        [XmlElement("rss_feed_credentials")]
-        public Credentials RssFeedCredentials { get; set; } = new Credentials();
+        [XmlElement("feed_credentials")]
+        public Credentials FeedCredentials { get; set; } = new Credentials();
 
         /// <summary>
         /// Determines if the feed reader is enabled or disabled.
@@ -44,7 +66,7 @@ namespace RssFeed
                 }
                 else
                 {
-                    logger.Warn(string.Format("Failed to get the timer enabled state for {0}. The timer is null.", RssFeedUri));
+                    logger.Warn(string.Format("Failed to get the timer enabled state for {0}. The timer is null.", FeedUri));
                     return false;
                 }
             }
@@ -57,7 +79,7 @@ namespace RssFeed
                 }
                 else
                 {
-                    logger.Warn(string.Format("Failed to set the timer enabled state for {0}. The timer is null.", RssFeedUri));
+                    logger.Warn(string.Format("Failed to set the timer enabled state for {0}. The timer is null.", FeedUri));
                 }
             }
         }
@@ -76,7 +98,7 @@ namespace RssFeed
                 }
                 else
                 {
-                    logger.Warn(string.Format("Failed to get the timer interval for {0}. The timer is null.", RssFeedUri));
+                    logger.Warn(string.Format("Failed to get the timer interval for {0}. The timer is null.", FeedUri));
                     return -1;
                 }
             }
@@ -89,7 +111,7 @@ namespace RssFeed
                 }
                 else
                 {
-                    logger.Warn(string.Format("Failed to set the timer interval for {0}. The timer is null.", RssFeedUri));
+                    logger.Warn(string.Format("Failed to set the timer interval for {0}. The timer is null.", FeedUri));
                 }
             }
         }
@@ -97,7 +119,7 @@ namespace RssFeed
         /// <summary>
         /// Constructor
         /// </summary>
-        public RssFeedReader()
+        public FeedReader()
         {
             // Create a timer to update the notifications
             _timer = new Timer()
@@ -116,39 +138,38 @@ namespace RssFeed
         /// <param name="e">Timer event args/</param>
         private void UpdateFeedAndSendNotifications(object sender, ElapsedEventArgs e)
         {
-            IEnumerable<SyndicationItem> newRssFeedEntries;
+            IEnumerable<FeedItem> newRssFeedEntries;
             UpdateRssFeed(out newRssFeedEntries);
             foreach (var item in newRssFeedEntries)
             {
-                ToastManager.Toast(item.Title.Text, _feed.Title.Text, item.Summary.Text);
+                ToastManager.Toast(item.Title, item.FeedTitle, item.Summary);
             }
         }
-
 
         /// <summary>
         /// Update the feed and get the new items.
         /// </summary>
         /// <param name="newItems">The new items.</param>
-        private void UpdateRssFeed(out IEnumerable<SyndicationItem> newItems)
+        private void UpdateRssFeed(out IEnumerable<FeedItem> newItems)
         {
             // Save off the current feed
-            SyndicationFeed oldFeed = _feed;
+            Feed oldFeed = Feed;
 
             // Update the feed
             UpdateRssFeed();
 
             // Determine the new items
-            if (_feed == null)
+            if (Feed == null)
             {
-                newItems = new List<SyndicationItem>();
+                newItems = new List<FeedItem>();
             }
             else if (oldFeed == null)
             {
-                newItems = _feed.Items;
+                newItems = Feed.Items;
             }
             else
             {
-                newItems = _feed.Items.Where(item => !oldFeed.Items.Any(oldItem => oldItem.Id == item.Id));
+                newItems = Feed.Items.Where(item => !oldFeed.Items.Any(oldItem => oldItem.Id == item.Id));
             }
         }
 
@@ -157,34 +178,34 @@ namespace RssFeed
         /// </summary>
         private void UpdateRssFeed()
         {
-            logger.Debug(string.Format("Updating the feed for {0}", RssFeedUri));
+            logger.Debug(string.Format("Updating the feed for {0}", FeedUri));
 
             try
             {
                 XmlReaderSettings readerSettings = null;
-                using (SecureString password = RssFeedCredentials.GetSecurePassword())
+                using (SecureString password = FeedCredentials.GetSecurePassword())
                 {
                     readerSettings = new XmlReaderSettings()
                     {
                         XmlResolver = new XmlUrlResolver()
                         {
-                            Credentials = new NetworkCredential(RssFeedCredentials.Username, password)
+                            Credentials = new NetworkCredential(FeedCredentials.Username, password)
                         }
                     };
                 }
-                using (XmlReader reader = XmlReader.Create(RssFeedUri, readerSettings))
+                using (XmlReader reader = XmlReader.Create(FeedUri, readerSettings))
                 {
-                    _feed = SyndicationFeed.Load(reader);
+                    Feed = new Feed(SyndicationFeed.Load(reader));
                 }
             }
             catch (Exception e)
             {
                 Enabled = false;
-                ToastManager.Toast("Failed to Update Feed", string.Format("Failed to update the feed {0}. Check settings and renable the feed.", RssFeedUri));
-                logger.Error(string.Format("Failed to update the feed {0} due to the exception {1}", RssFeedUri, e.Message));
+                ToastManager.Toast("Failed to Update Feed", string.Format("Failed to update the feed {0}. Check settings and renable the feed.", FeedUri));
+                logger.Error(string.Format("Failed to update the feed {0} due to the exception {1}", FeedUri, e.Message));
             }
 
-            logger.Debug(string.Format("Finished updating the feed for {0}", RssFeedUri));
+            logger.Debug(string.Format("Finished updating the feed for {0}", FeedUri));
         }
 
         protected void OnPropertyChanged(string name)
