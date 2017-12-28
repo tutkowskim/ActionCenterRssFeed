@@ -142,7 +142,7 @@ namespace RssFeed
             UpdateRssFeed(out newRssFeedEntries);
             foreach (var item in newRssFeedEntries)
             {
-                ToastManager.Toast(item.Title, item.FeedTitle, item.Summary);
+                ToastManager.Toast(item);
             }
         }
 

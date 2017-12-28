@@ -16,7 +16,7 @@
         <ListView Name="FeedItems">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" MouseLeftButtonUp="FeedItemClicked">
                         <Image Height="50" Width="50" Visibility="{Binding HasImageUri, Converter={StaticResource VisibilityConverter}}" Source="{Binding FeedImageUrl}" />
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding Title}" />

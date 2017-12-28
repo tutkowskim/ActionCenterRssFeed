@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace RssFeed
 {
@@ -10,6 +11,8 @@ namespace RssFeed
     /// </summary>
     public partial class AggregateFeedWindow : Window
     {
+        private readonly static log4net.ILog logger = log4net.LogManager.GetLogger("tutkowski.rssfeed.aggregatefeedwindow");
+
         private IEnumerable<FeedReader> _feedReaders;
 
         /// <summary>
@@ -66,6 +69,25 @@ namespace RssFeed
             {
                 FeedItems.ItemsSource = updatedItemList;
             }));
+        }
+
+        /// <summary>
+        /// Action handler for clicking an item in the feed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FeedItemClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            FrameworkElement control = sender as FrameworkElement;
+            FeedItem item = control.DataContext as FeedItem;
+            if (item != null)
+            {
+                item.OpenLink();
+            }
+            else
+            {
+                logger.Warn("Unable to determine the item clicked.");
+            }
         }
     }
 }
