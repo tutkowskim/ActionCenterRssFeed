@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace RssFeed
 {
@@ -7,23 +8,13 @@ namespace RssFeed
     /// </summary>
     public class FeedItem
     {
-        private Feed _feed;
+        private readonly static log4net.ILog logger = log4net.LogManager.GetLogger("tutkowski.rssfeed.feeditem");
 
+        [XmlIgnore]
         /// <summary>
-        /// Default Contructor
+        /// The feed this item was published to.
         /// </summary>
-        public FeedItem()
-        {
-            _feed = null;
-        }
-
-        /// <summary>
-        /// Contructor
-        /// </summary>
-        public FeedItem(Feed feed)
-        {
-            _feed = feed;
-        }
+        public Feed Feed { get; set; }
 
         /// <summary>
         /// A unique identifer for this item in the feed.
@@ -52,7 +43,27 @@ namespace RssFeed
         {
             get
             {
-                return _feed != null ? _feed.Title : string.Empty;
+                return Feed != null ? Feed.Title : string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// An external link to this item.
+        /// </summary>
+        public string Link { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Open the link to this feed item.
+        /// </summary>
+        public void OpenLink()
+        {
+            if (!string.IsNullOrWhiteSpace(Link))
+            {
+                System.Diagnostics.Process.Start(Link);
+            }
+            else
+            {
+                logger.Info(string.Format("Unable to open link for the item {0} in the feed, since it is null or empty.", Title, FeedTitle));
             }
         }
 
@@ -63,7 +74,7 @@ namespace RssFeed
         {
             get
             {
-                return _feed != null ? _feed.ImageUri : string.Empty;
+                return Feed != null ? Feed.ImageUri : string.Empty;
             }
         }
 
@@ -74,7 +85,7 @@ namespace RssFeed
         {
             get
             {
-                return _feed != null ? _feed.HasImageUri : false;
+                return Feed != null ? Feed.HasImageUri : false;
             }
         }
     }

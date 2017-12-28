@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel.Syndication;
 
 namespace RssFeed
@@ -10,7 +11,25 @@ namespace RssFeed
 
         public string Title { get; set; } = string.Empty;
 
-        public List<FeedItem> Items { get; set; } = new List<FeedItem>();
+        private List<FeedItem> _items = new List<FeedItem>();
+        public List<FeedItem> Items
+        {
+            get
+            {
+                return _items;
+            }
+            set
+            {
+                if (value != _items)
+                {
+                    _items = value;
+                    foreach(FeedItem item in _items)
+                    {
+                        item.Feed = this;
+                    }
+                }
+            }
+        }
 
         public string ImageUri { get; set; } = string.Empty;
 
@@ -79,12 +98,20 @@ namespace RssFeed
                         continue;
                     }
 
-                    Items.Add(new FeedItem(this)
+                    SyndicationLink syndicationLink = syndicationItem.Links.FirstOrDefault();
+                    if (syndicationLink == null)
                     {
+                        syndicationFeed.Links.FirstOrDefault();
+                    }
+
+                    Items.Add(new FeedItem()
+                    {
+                        Feed = this,
                         Id = syndicationItem.Id,
                         Title = title,
                         Summary = summary,
                         PublishDate = syndicationItem.PublishDate.DateTime,
+                        Link = syndicationLink != null ? syndicationLink.Uri.AbsoluteUri : string.Empty,
                     });
                 }
             }

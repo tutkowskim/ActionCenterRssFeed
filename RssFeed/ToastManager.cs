@@ -37,20 +37,18 @@ namespace RssFeed
         }
 
         /// <summary>
-        /// Create a Windows Toast Notification
+        /// Create a Windows Toast Notification for the given feed item
         /// </summary>
-        /// <param name="title">Title for the toast</param>
-        /// /// <param name="subtitle">Subtitle in the toast</param>
-        /// <param name="summary">Summary in the toast</param>
-        public static void Toast(string title, string subtitle, string summary)
+        /// <param name="feedItem"></param>
+        public static void Toast(FeedItem feedItem)
         {
             XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
 
             // Fill in the text elements
             XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
-            stringElements[0].AppendChild(toastXml.CreateTextNode(title));
-            stringElements[1].AppendChild(toastXml.CreateTextNode(subtitle));
-            stringElements[2].AppendChild(toastXml.CreateTextNode(summary));
+            stringElements[0].AppendChild(toastXml.CreateTextNode(feedItem.Title));
+            stringElements[1].AppendChild(toastXml.CreateTextNode(feedItem.FeedTitle));
+            stringElements[2].AppendChild(toastXml.CreateTextNode(feedItem.Summary));
 
             // Specify the absolute path to an image
             string imagePath = "file:///" + Assets.RssImagePath;
@@ -58,6 +56,8 @@ namespace RssFeed
             imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
 
             ToastNotification toast = new ToastNotification(toastXml);
+            toast.Activated += delegate { feedItem.OpenLink(); };
+
             ToastNotificationManager.CreateToastNotifier(ApplicationId).Show(toast);
         }
     }
