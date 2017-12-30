@@ -22,7 +22,7 @@
                             <TextBlock Text="{Binding Title}" />
                             <TextBlock Text="{Binding FeedTitle}" />
                             <TextBlock Text="{Binding PublishDate}" />
-                            <TextBlock Text="{Binding Summary}" />
+                            <WebBrowser Initialized="UpdateWebBrowserContent"/>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>

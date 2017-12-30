@@ -89,5 +89,19 @@ namespace RssFeed
                 logger.Warn("Unable to determine the item clicked.");
             }
         }
+
+        private void UpdateWebBrowserContent(object sender, EventArgs e)
+        {
+            WebBrowser browser = sender as WebBrowser;
+            FeedItem item = browser.DataContext as FeedItem;
+            if (item != null)
+            {
+                browser.NavigateToString(item.Summary);
+            }
+            else
+            {
+                logger.Warn("Unable to determine the webbrowser loaded.");
+            }
+        }
     }
 }
