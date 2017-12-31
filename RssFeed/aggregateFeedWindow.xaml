@@ -22,7 +22,7 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel MouseLeftButtonUp="FeedItemClicked">
+                    <DockPanel Background="Transparent" MouseLeftButtonUp="FeedItemClicked">
                         <Image DockPanel.Dock="Left" Height="50" Width="50" Visibility="{Binding HasImageUri, Converter={StaticResource VisibilityConverter}}" Source="{Binding FeedImageUrl}" />
                         <Grid DockPanel.Dock="Right">
                             <Grid.ColumnDefinitions>
@@ -39,7 +39,14 @@
                                 <TextBlock Text=", " />
                                 <TextBlock Text="{Binding PublishDate}" />
                             </StackPanel>
-                            <WebBrowser Grid.Row="2" Initialized="UpdateWebBrowserContent"/>
+                            <WebBrowser Grid.Row="2" 
+                                        Initialized="WebBrowser_Initialized" 
+                                        LoadCompleted="WebBrowser_LoadCompleted"
+                                        ScrollViewer.CanContentScroll="False"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
+                                        ScrollViewer.VerticalScrollBarVisibility="Hidden" 
+                                        Focusable="False"
+                                        />
                         </Grid>
                     </DockPanel>
                 </DataTemplate>
