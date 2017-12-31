@@ -68,7 +68,7 @@ namespace RssFeed
             }
 
             // Remove any items that no longer exist
-            var removedItems = _feedItems.Where(item => !updatedFeedItemList.Any(updatedItem => item.Id == item.Id));
+            var removedItems = (new List<FeedItem>(_feedItems)).Where(item => !updatedFeedItemList.Any(updatedItem => item.Id == updatedItem.Id));
             foreach (var item in removedItems)
             {
                 _feedItems.Remove(item);
