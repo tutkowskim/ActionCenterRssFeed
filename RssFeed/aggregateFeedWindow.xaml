@@ -17,7 +17,8 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Padding" Value="1" />
+                    <Setter Property="Focusable" Value="false"/>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
@@ -46,8 +47,7 @@
                                         ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
                                         ScrollViewer.VerticalScrollBarVisibility="Hidden" 
                                         IsEnabled="False"
-                                        Focusable="False"
-                                        />
+                                        Focusable="False" />
                         </Grid>
                     </DockPanel>
                 </DataTemplate>
