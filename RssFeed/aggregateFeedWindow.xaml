@@ -14,17 +14,42 @@
     </Window.Resources>
     <Grid>
         <ListView Name="FeedItems">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Padding" Value="1" />
+                    <Setter Property="Focusable" Value="false"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" MouseLeftButtonUp="FeedItemClicked">
-                        <Image Height="50" Width="50" Visibility="{Binding HasImageUri, Converter={StaticResource VisibilityConverter}}" Source="{Binding FeedImageUrl}" />
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding Title}" />
-                            <TextBlock Text="{Binding FeedTitle}" />
-                            <TextBlock Text="{Binding PublishDate}" />
-                            <TextBlock Text="{Binding Summary}" />
-                        </StackPanel>
-                    </StackPanel>
+                    <DockPanel Background="Transparent" MouseLeftButtonUp="FeedItemClicked">
+                        <Image DockPanel.Dock="Left" Height="50" Width="50" Visibility="{Binding HasImageUri, Converter={StaticResource VisibilityConverter}}" Source="{Binding FeedImageUrl}" />
+                        <Grid DockPanel.Dock="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{Binding Title}" />
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Text="{Binding FeedTitle}" />
+                                <TextBlock Text=", " />
+                                <TextBlock Text="{Binding PublishDate}" />
+                            </StackPanel>
+                            <WebBrowser Grid.Row="2" 
+                                        Initialized="WebBrowser_Initialized" 
+                                        LoadCompleted="WebBrowser_LoadCompleted"
+                                        ScrollViewer.CanContentScroll="False"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
+                                        ScrollViewer.VerticalScrollBarVisibility="Hidden" 
+                                        IsEnabled="False"
+                                        Focusable="False" />
+                        </Grid>
+                    </DockPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
