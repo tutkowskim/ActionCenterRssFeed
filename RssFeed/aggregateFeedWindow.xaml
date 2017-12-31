@@ -45,6 +45,7 @@
                                         ScrollViewer.CanContentScroll="False"
                                         ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
                                         ScrollViewer.VerticalScrollBarVisibility="Hidden" 
+                                        IsEnabled="False"
                                         Focusable="False"
                                         />
                         </Grid>
