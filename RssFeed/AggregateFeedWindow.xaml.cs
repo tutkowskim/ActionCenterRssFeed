@@ -68,7 +68,7 @@ namespace RssFeed
             }
 
             // Remove any items that no longer exist
-            var removedItems = _feedItems.Where(item => !updatedFeedItemList.Any(updatedItem => item.Id == item.Id));
+            var removedItems = (new List<FeedItem>(_feedItems)).Where(item => !updatedFeedItemList.Any(updatedItem => item.Id == updatedItem.Id));
             foreach (var item in removedItems)
             {
                 _feedItems.Remove(item);
@@ -118,13 +118,20 @@ namespace RssFeed
         {
             WebBrowser browser = sender as WebBrowser;
             FeedItem item = browser.DataContext as FeedItem;
-            if (item != null)
+            if (item != null && browser != null)
             {
-                browser.NavigateToString(item.Summary);
+                // The summary for an RSS item can be in HTML so we are using a web browser to render it,
+                // and in order to make the other text look consistent we will just stick it all into HTML.
+                string html = string.Format("<h2>{0}</h2><b>{1}, {2}</b><br/>{3}", 
+                    item.Title, 
+                    item.FeedTitle,
+                    item.PublishDate,
+                    item.Summary);
+                browser.NavigateToString(html);
             }
             else
             {
-                logger.Warn("Unable to determine the webbrowser loaded.");
+                logger.Warn("Unable to determine the webbrowser loaded or the rss feed associated with it.");
             }
         }
 
@@ -136,8 +143,25 @@ namespace RssFeed
         private void WebBrowser_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
             WebBrowser webBrowser = sender as WebBrowser;
+            if (webBrowser == null)
+            {
+                logger.Warn("Unable to determine the web browser that complted loading.");
+                return;
+            }
+
             mshtml.HTMLDocument doc = webBrowser.Document as mshtml.HTMLDocument;
+            if (doc == null)
+            {
+                logger.Warn("Unable to get the HTMLDocument from the web browser.");
+                return;
+            }
+
             mshtml.IHTMLElement2 elem = doc.activeElement as mshtml.IHTMLElement2;
+            if (elem == null)
+            {
+                logger.Warn("Unable to get the internal html element from the web browser.");
+                return;
+            }
 
             doc.body.style.overflow = "hidden";
             webBrowser.Height = elem.scrollHeight;
