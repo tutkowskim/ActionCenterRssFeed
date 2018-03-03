@@ -57,5 +57,23 @@ namespace RssFeed
                 logger.Warn("Unable to get RssFeedReader associated with password box.");
             }
         }
+
+        /// <summary>
+        /// Commit the edit when unloading the datagrid.
+        ///<remark>
+        /// This resolves the issue of not being able to reopen the config window after
+        /// closing the window with an unsaved edit.
+        /// </remark>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RssFeedsGrid_Unloaded(object sender, RoutedEventArgs e)
+        {
+            DataGrid grid = sender as DataGrid;
+            if (grid != null)
+            {
+                grid.CommitEdit(DataGridEditingUnit.Row, true);
+            }
+        }
     }
 }
