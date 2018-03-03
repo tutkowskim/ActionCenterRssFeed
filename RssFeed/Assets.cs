@@ -26,7 +26,7 @@ namespace RssFeed
         {
             get
             {
-                return Path.Combine(InstallDirectory, "RSS.png");
+                return Path.Combine(InstallDirectory, "RSS_White.png");
             }
         }
 

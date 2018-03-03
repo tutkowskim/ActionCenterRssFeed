@@ -32,7 +32,7 @@ namespace RssFeed
 
             // Initialize Tray Icon
             System.Drawing.Icon icon;
-            using (Stream iconStream = GetResourceStream(new Uri("pack://application:,,,/RssFeed;component/RSS.ico")).Stream)
+            using (Stream iconStream = GetResourceStream(new Uri("pack://application:,,,/RssFeed;component/RSS_White.ico")).Stream)
             {
                 icon = new System.Drawing.Icon(iconStream);
             }
