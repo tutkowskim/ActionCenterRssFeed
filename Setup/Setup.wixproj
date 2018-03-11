@@ -17,7 +17,7 @@
     <Pedantic>True</Pedantic>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
-    <SuppressIces>ICE69</SuppressIces>
+    <SuppressIces>ICE69;ICE61</SuppressIces>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <VerboseOutput>True</VerboseOutput>
   </PropertyGroup>
@@ -26,11 +26,12 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
-    <SuppressIces>ICE69</SuppressIces>
+    <SuppressIces>ICE69;ICE61</SuppressIces>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <VerboseOutput>True</VerboseOutput>
     <SuppressAllWarnings>False</SuppressAllWarnings>
     <Pedantic>True</Pedantic>
+    <SuppressValidation>False</SuppressValidation>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />

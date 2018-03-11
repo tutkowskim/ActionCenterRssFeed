@@ -72,6 +72,7 @@ namespace RssFeed
                     {
                         _rssAggregateFeedWindow.WindowState = WindowState.Normal;
                     }
+                    _rssAggregateFeedWindow.Topmost = true;
                     _rssAggregateFeedWindow.Focus();
                 }
             }
@@ -96,6 +97,7 @@ namespace RssFeed
                 {
                     _rssFeedConfigurationWindow.WindowState = WindowState.Normal;
                 }
+                _rssFeedConfigurationWindow.Topmost = true;
                 _rssFeedConfigurationWindow.Focus();
             }
         }
