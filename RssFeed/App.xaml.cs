@@ -13,6 +13,8 @@ namespace RssFeed
     {
         private readonly static log4net.ILog logger = log4net.LogManager.GetLogger("tutkowski.rssfeed.app");
         private System.Windows.Forms.NotifyIcon _trayIcon;
+        private FeedConfigWindow _rssFeedConfigurationWindow;
+        private AggregateFeedWindow _rssAggregateFeedWindow;
         private ObservableCollection<FeedReader> _rssFeedReaders;
 
         /// <summary>
@@ -58,8 +60,20 @@ namespace RssFeed
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                AggregateFeedWindow rssFeedConfigurationWindow = new AggregateFeedWindow(_rssFeedReaders);
-                rssFeedConfigurationWindow.Show();
+                if (_rssAggregateFeedWindow == null)
+                {
+                    _rssAggregateFeedWindow = new AggregateFeedWindow(_rssFeedReaders);
+                    _rssAggregateFeedWindow.Closing += delegate { _rssAggregateFeedWindow = null; };
+                    _rssAggregateFeedWindow.Show();
+                }
+                else
+                {
+                    if (_rssAggregateFeedWindow.WindowState == WindowState.Minimized)
+                    {
+                        _rssAggregateFeedWindow.WindowState = WindowState.Normal;
+                    }
+                    _rssAggregateFeedWindow.Focus();
+                }
             }
         }
 
@@ -70,8 +84,20 @@ namespace RssFeed
         /// <param name="e"></param>
         private void EditRssFeeds(object sender, EventArgs e)
         {
-            FeedConfigWindow rssFeedConfigurationWindow = new FeedConfigWindow(_rssFeedReaders);
-            rssFeedConfigurationWindow.Show();
+            if (_rssFeedConfigurationWindow == null)
+            {
+                _rssFeedConfigurationWindow = new FeedConfigWindow(_rssFeedReaders);
+                _rssFeedConfigurationWindow.Closing += delegate { _rssFeedConfigurationWindow = null; };
+                _rssFeedConfigurationWindow.Show();
+            }
+            else
+            {
+                if (_rssFeedConfigurationWindow.WindowState == WindowState.Minimized)
+                {
+                    _rssFeedConfigurationWindow.WindowState = WindowState.Normal;
+                }
+                _rssFeedConfigurationWindow.Focus();
+            }
         }
 
         /// <summary>
