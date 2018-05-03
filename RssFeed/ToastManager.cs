@@ -55,9 +55,11 @@ namespace RssFeed
             XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
             imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
 
+            // Open the link to the rss item if the toast notification is clicked
             ToastNotification toast = new ToastNotification(toastXml);
             toast.Activated += delegate { feedItem.OpenLink(); };
 
+            // Show the toast notification
             ToastNotificationManager.CreateToastNotifier(ApplicationId).Show(toast);
         }
     }
